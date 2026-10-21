@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DIS After-School Programs</title>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Noto Sans Lao', 'Phetsarath OT', -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: #f2f6fb; color: #1b2b4b; }
+  #app { max-width: 520px; margin: 0 auto; padding: 20px 16px 40px; }
+  h1 { font-size: 22px; line-height: 1.35; text-align: center; margin: 12px 0 8px; color: #1f3f8f; }
+  h2 { font-size: 20px; margin: 18px 0 10px; }
+  p.sub { text-align: center; margin: 0 0 20px; color: #4a5a78; }
+  .btn { display: block; width: 100%; padding: 16px; margin: 12px 0; font-size: 18px; font-weight: 600; border: 0; border-radius: 14px; background: #1f3f8f; color: #fff; font-family: inherit; }
+  .btn.alt { background: #fff; color: #1f3f8f; border: 2px solid #1f3f8f; }
+  .btn.orange { background: #f07a1f; }
+  .btn:disabled { opacity: .5; }
+  .btn.big { padding: 26px; font-size: 24px; }
+  label { display: block; font-weight: 600; margin: 16px 0 6px; }
+  input[type=text], input[type=tel] { width: 100%; padding: 14px; font-size: 18px; border: 2px solid #c6d2e6; border-radius: 12px; font-family: inherit; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tile { padding: 16px 8px; font-size: 18px; font-weight: 600; background: #fff; border: 2px solid #c6d2e6; border-radius: 12px; color: #1b2b4b; font-family: inherit; text-align: center; }
+  .tile.on { background: #1f3f8f; border-color: #1f3f8f; color: #fff; }
+  .card { display: block; width: 100%; text-align: left; padding: 14px; margin: 10px 0; background: #fff; border: 2px solid #c6d2e6; border-radius: 14px; font-family: inherit; color: #1b2b4b; font-size: 17px; }
+  .card.on { border-color: #1f3f8f; background: #e6eeff; }
+  .card b { display: block; font-size: 19px; }
+  .card span { display: block; color: #4a5a78; font-size: 15px; margin-top: 2px; }
+  .card .tick { float: right; font-size: 24px; color: #1f3f8f; }
+  .note { background: #fff4e5; border-radius: 10px; padding: 10px 12px; margin: 12px 0; font-size: 15px; }
+  .err { color: #c0302b; font-weight: 600; margin: 10px 0; }
+  .sum { background: #fff; border-radius: 14px; padding: 14px; margin: 10px 0; border: 2px solid #c6d2e6; }
+  .sum b { font-size: 18px; }
+  .back { background: none; border: 0; color: #1f3f8f; font-size: 16px; padding: 6px 0; font-family: inherit; }
+  .done { text-align: center; padding-top: 40px; }
+  .done .big { font-size: 60px; }
+</style>
+</head>
+<body>
+<div id="app"><p style="padding:20px;font-size:18px">Loading...</p></div>
+<script>
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFPCTl119Npv4VI2HH2B2O74wlb62y2bJhRp4gHjDsXpR-omU-3IHyzzcpA91t7Wxi2w/exec';
+window.onerror = function (m, u, l) { document.getElementById('app').innerHTML = '<p style=color:#c0302b;padding:20px>Page error: ' + m + ' (line ' + l + ')</p>'; };
+var GRADES = [
+  { en: 'Pre-K', lo: 'Pre-K' }, { en: 'Kinder', lo: 'Kinder' },
+  { en: 'Grade 1', lo: 'ຊັ້ນ 1' }, { en: 'Grade 2', lo: 'ຊັ້ນ 2' }, { en: 'Grade 3', lo: 'ຊັ້ນ 3' },
+  { en: 'Grade 4', lo: 'ຊັ້ນ 4' }, { en: 'Grade 5', lo: 'ຊັ້ນ 5' }, { en: 'Grade 6', lo: 'ຊັ້ນ 6' }
+];
+
+var DAYS = {
+  tuthu: { en: 'Tuesday & Thursday', lo: 'ວັນອັງຄານ ແລະ ວັນພະຫັດ' },
+  monwed: { en: 'Monday & Wednesday', lo: 'ວັນຈັນ ແລະ ວັນພຸດ' }
+};
+
+var ACTS = [
+  { id: 'sb', en: 'Soccer (boys)', lo: 'ເຕະບານ (ເດັກຊາຍ)', days: 'tuthu', price: 'free' },
+  { id: 'sg', en: 'Soccer (girls)', lo: 'ເຕະບານ (ເດັກຍິງ)', days: 'monwed', price: 'free' },
+  { id: 'ch', en: 'Chinese', lo: 'ພາສາຈີນ', days: 'tuthu', price: '3,500', age: { en: 'Ages 5-12', lo: 'ອາຍຸ 5-12 ປີ' } },
+  { id: 'lo', en: 'Lao Language', lo: 'ພາສາລາວ', days: 'tuthu', price: '3,200' },
+  { id: 'sw', en: 'Swimming', lo: 'ລອຍນ້ຳ', days: 'swim', price: '4,200' }
+];
+
+var T = {
+  en: {
+    title: 'After-School Programs',
+    parentTitle: 'Your details',
+    pname: 'Your name', pcontact: 'Phone or WhatsApp number',
+    next: 'Next', back: 'Back',
+    gradeQ: 'What grade is your child in?', cname: 'Child’s name',
+    actQ: 'Which activities is your child interested in?', actHint: 'Tap all that apply. All programs run 4:00-5:00 PM.',
+    firstQ: 'Which one is your first choice?',
+    clash: 'Some programs are on the same days, so please pick a first choice.',
+    review: 'Your children', addChild: '+ Add another child', send: 'Send',
+    sending: 'Sending...', thanks: 'Thank you!', thanks2: 'We have received your reply and will be in touch soon.',
+    errName: 'Please fill in your name and phone number.',
+    errChild: 'Please choose a grade and enter your child’s name.',
+    errAct: 'Please choose at least one activity.',
+    errFirst: 'Please choose a first choice.',
+    errSend: 'Something went wrong. Please try again.',
+    free: 'Some fees may apply', perMonth: 'THB/month', start: 'Starts Nov 2',
+    interested: 'Interested in', first: 'First choice', ordinal: ''
+  },
+  lo: {
+    title: 'ໂປຣແກຣມຮຽນເພີ່ມຫຼັງເລີກຮຽນ',
+    parentTitle: 'ຂໍ້ມູນຂອງທ່ານ',
+    pname: 'ຊື່ຂອງທ່ານ', pcontact: 'ເບີໂທ ຫຼື WhatsApp',
+    next: 'ຕໍ່ໄປ', back: 'ກັບຄືນ',
+    gradeQ: 'ລູກຂອງທ່ານຮຽນຊັ້ນໃດ?', cname: 'ຊື່ນັກຮຽນ',
+    actQ: 'ລູກຂອງທ່ານສົນໃຈກິດຈະກຳໃດ?', actHint: 'ກົດເລືອກໄດ້ຫຼາຍອັນ. ທຸກກິດຈະກຳ 4:00-5:00 ໂມງແລງ.',
+    firstQ: 'ເລືອກອັນໃດເປັນອັນດັບ 1?',
+    clash: 'ບາງກິດຈະກຳຢູ່ວັນດຽວກັນ, ກະລຸນາເລືອກອັນດັບ 1.',
+    review: 'ລູກຂອງທ່ານ', addChild: '+ ເພີ່ມລູກຄົນອື່ນ', send: 'ສົ່ງ',
+    sending: 'ກຳລັງສົ່ງ...', thanks: 'ຂອບໃຈ!', thanks2: 'ພວກເຮົາໄດ້ຮັບຂໍ້ມູນຂອງທ່ານແລ້ວ ແລະ ຈະຕິດຕໍ່ກັບໄປ.',
+    errName: 'ກະລຸນາຕື່ມຊື່ ແລະ ເບີໂທ.',
+    errChild: 'ກະລຸນາເລືອກຊັ້ນ ແລະ ຕື່ມຊື່ນັກຮຽນ.',
+    errAct: 'ກະລຸນາເລືອກຢ່າງໜ້ອຍໜຶ່ງກິດຈະກຳ.',
+    errFirst: 'ກະລຸນາເລືອກອັນດັບ 1.',
+    errSend: 'ມີບັນຫາ, ກະລຸນາລອງໃໝ່.',
+    free: 'ອາດມີຄ່າທຳນຽມບາງຢ່າງ', perMonth: 'ບາດ/ເດືອນ', start: 'ເລີ່ມ 2 ພະຈິກ',
+    interested: 'ສົນໃຈ', first: 'ອັນດັບ 1', ordinal: ''
+  }
+};
+
+var S = { step: 0, lang: 'en', parent: '', contact: '', children: [], cur: { grade: -1, name: '', acts: [], first: '' }, err: '' };
+
+function t(k) { return T[S.lang][k]; }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function actById(id) { return ACTS.filter(function (a) { return a.id === id; })[0]; }
+function gradeLabel(i) { return GRADES[i][S.lang]; }
+
+function swimDays(g) { return g <= 1 ? 'monwed' : (g <= 4 ? 'tuthu' : null); }
+function available(g) {
+  return ACTS.filter(function (a) { return a.id !== 'sw' || swimDays(g) !== null; });
+}
+function daysFor(a, g) { return DAYS[a.id === 'sw' ? swimDays(g) : a.days][S.lang]; }
+
+function go(step) { S.step = step; S.err = ''; render(); window.scrollTo(0, 0); }
+
+function setLang(l) { S.lang = l; go(1); }
+
+function nextParent() {
+  S.parent = document.getElementById('pn').value.trim();
+  S.contact = document.getElementById('pc').value.trim();
+  if (!S.parent || !S.contact) { S.err = t('errName'); render(); return; }
+  go(2);
+}
+
+function pickGrade(i) {
+  var n = document.getElementById('cn'); if (n) S.cur.name = n.value;
+  S.cur.grade = i; S.cur.acts = []; S.cur.first = '';
+  render();
+}
+
+function nextChild() {
+  S.cur.name = document.getElementById('cn').value.trim();
+  if (S.cur.grade < 0 || !S.cur.name) { S.err = t('errChild'); render(); return; }
+  go(3);
+}
+
+function toggleAct(id) {
+  var i = S.cur.acts.indexOf(id);
+  if (i >= 0) S.cur.acts.splice(i, 1); else S.cur.acts.push(id);
+  if (S.cur.acts.length === 1) S.cur.first = S.cur.acts[0];
+  if (S.cur.acts.indexOf(S.cur.first) < 0) S.cur.first = S.cur.acts.length ? '' : '';
+  if (S.cur.acts.length === 1) S.cur.first = S.cur.acts[0];
+  render();
+}
+
+function pickFirst(id) { S.cur.first = id; render(); }
+
+function saveChild() {
+  if (!S.cur.acts.length) { S.err = t('errAct'); render(); return; }
+  if (!S.cur.first) { S.err = t('errFirst'); render(); return; }
+  S.children.push({ grade: S.cur.grade, name: S.cur.name, acts: S.cur.acts.slice(), first: S.cur.first });
+  go(4);
+}
+
+function addChild() {
+  S.cur = { grade: -1, name: '', acts: [], first: '' };
+  go(2);
+}
+
+function removeChild(i) {
+  S.children.splice(i, 1);
+  if (!S.children.length) { addChild(); return; }
+  render();
+}
+
+function sendAll() {
+  var btn = document.getElementById('sendbtn');
+  btn.disabled = true; btn.textContent = t('sending');
+  // One row per child. The keys are the sheet's column names; a new key becomes a new column automatically.
+  var payload = {
+    rows: S.children.map(function (c) {
+      return {
+        'Language': S.lang === 'lo' ? 'Lao' : 'English',
+        'Parent name': S.parent,
+        'Phone / WhatsApp': S.contact,
+        'Child name': c.name,
+        'Grade': GRADES[c.grade].en,
+        'Interested in': c.acts.map(function (id) { return actById(id).en; }).join(', '),
+        'First choice': actById(c.first).en,
+        'Children in family': S.children.length
+      };
+    })
+  };
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (j) { if (j && j.ok) { go(5); } else { throw new Error('save failed'); } })
+    .catch(function () { S.err = t('errSend'); render(); });
+}
+
+function render() {
+  var h = '';
+  var err = S.err ? '<div class="err">' + esc(S.err) + '</div>' : '';
+
+  if (S.step === 0) {
+    h = '<h1>DIS After-School Programs<br>ໂປຣແກຣມຮຽນເພີ່ມຫຼັງເລີກຮຽນ</h1>' +
+        '<p class="sub">Choose your language · ເລືອກພາສາ</p>' +
+        '<button class="btn big" onclick="setLang(\'en\')">English</button>' +
+        '<button class="btn big orange" onclick="setLang(\'lo\')">ພາສາລາວ</button>';
+  }
+
+  else if (S.step === 1) {
+    h = '<button class="back" onclick="go(0)">← ' + t('back') + '</button>' +
+        '<h1>' + t('title') + '</h1><h2>' + t('parentTitle') + '</h2>' +
+        '<label>' + t('pname') + '</label><input type="text" id="pn" value="' + esc(S.parent) + '">' +
+        '<label>' + t('pcontact') + '</label><input type="tel" id="pc" value="' + esc(S.contact) + '">' +
+        err + '<button class="btn" onclick="nextParent()">' + t('next') + '</button>';
+  }
+
+  else if (S.step === 2) {
+    var back = S.children.length ? 4 : 1;
+    h = '<button class="back" onclick="go(' + back + ')">← ' + t('back') + '</button>' +
+        '<h2>' + t('gradeQ') + '</h2><div class="grid">';
+    for (var i = 0; i < GRADES.length; i++) {
+      h += '<button class="tile' + (S.cur.grade === i ? ' on' : '') + '" onclick="pickGrade(' + i + ')">' + esc(gradeLabel(i)) + '</button>';
+    }
+    h += '</div><label>' + t('cname') + '</label><input type="text" id="cn" value="' + esc(S.cur.name) + '">' +
+         err + '<button class="btn" onclick="nextChild()">' + t('next') + '</button>';
+  }
+
+  else if (S.step === 3) {
+    h = '<button class="back" onclick="go(2)">← ' + t('back') + '</button>' +
+        '<h2>' + t('actQ') + '</h2><p class="sub" style="text-align:left">' + esc(S.cur.name) + ' · ' + esc(gradeLabel(S.cur.grade)) + '</p>' +
+        '<p>' + t('actHint') + '</p>';
+    available(S.cur.grade).forEach(function (a) {
+      var on = S.cur.acts.indexOf(a.id) >= 0;
+      var price = a.price === 'free' ? t('free') : a.price + ' ' + t('perMonth');
+      var extra = a.age ? ' · ' + a.age[S.lang] : '';
+      var start = a.id === 'lo' ? ' · ' + t('start') : '';
+      h += '<button class="card' + (on ? ' on' : '') + '" onclick="toggleAct(\'' + a.id + '\')">' +
+           (on ? '<span class="tick">✓</span>' : '') +
+           '<b>' + esc(a[S.lang]) + '</b>' +
+           '<span>' + daysFor(a, S.cur.grade) + extra + '</span>' +
+           '<span>' + price + start + '</span></button>';
+    });
+    if (S.cur.acts.length > 1) {
+      h += '<div class="note">' + t('clash') + '</div><h2>' + t('firstQ') + '</h2>';
+      S.cur.acts.forEach(function (id) {
+        var a = actById(id);
+        h += '<button class="card' + (S.cur.first === id ? ' on' : '') + '" onclick="pickFirst(\'' + id + '\')">' +
+             (S.cur.first === id ? '<span class="tick">★</span>' : '') + '<b>' + esc(a[S.lang]) + '</b></button>';
+      });
+    }
+    h += err + '<button class="btn" onclick="saveChild()">' + t('next') + '</button>';
+  }
+
+  else if (S.step === 4) {
+    h = '<h2>' + t('review') + '</h2>';
+    S.children.forEach(function (c, i) {
+      h += '<div class="sum"><b>' + esc(c.name) + '</b> · ' + esc(gradeLabel(c.grade)) + '<br>' +
+           t('interested') + ': ' + c.acts.map(function (id) { return esc(actById(id)[S.lang]); }).join(', ') + '<br>' +
+           t('first') + ': ★ ' + esc(actById(c.first)[S.lang]) +
+           '<br><button class="back" onclick="removeChild(' + i + ')">✕</button></div>';
+    });
+    h += err + '<button class="btn alt" onclick="addChild()">' + t('addChild') + '</button>' +
+         '<button class="btn orange" id="sendbtn" onclick="sendAll()">' + t('send') + '</button>';
+  }
+
+  else {
+    h = '<div class="done"><div class="big">✓</div><h1>' + t('thanks') + '</h1><p>' + t('thanks2') + '</p></div>';
+  }
+
+  document.getElementById('app').innerHTML = h;
+}
+
+render();
+</script>
+</body>
+</html>
