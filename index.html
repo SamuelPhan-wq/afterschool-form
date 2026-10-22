@@ -67,8 +67,8 @@ var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFPCTl119Npv4VI2
 window.onerror = function (m, u, l) { document.getElementById('app').innerHTML = '<p style=color:#c0302b;padding:20px>Page error: ' + m + ' (line ' + l + ')</p>'; };
 var GRADES = [
   { en: 'Pre-K', lo: 'Pre-K' }, { en: 'Kinder', lo: 'Kinder' },
-  { en: 'Grade 1', lo: 'ຊັ້ນ 1' }, { en: 'Grade 2', lo: 'ຊັ້ນ 2' }, { en: 'Grade 3', lo: 'ຊັ້ນ 3' },
-  { en: 'Grade 4', lo: 'ຊັ້ນ 4' }, { en: 'Grade 5', lo: 'ຊັ້ນ 5' }
+  { en: 'Grade 1', lo: 'ຫ້ອງ ປ.1' }, { en: 'Grade 2', lo: 'ຫ້ອງ ປ.2' }, { en: 'Grade 3', lo: 'ຫ້ອງ ປ.3' },
+  { en: 'Grade 4', lo: 'ຫ້ອງ ປ.4' }, { en: 'Grade 5', lo: 'ຫ້ອງ ປ.5' }
 ];
 
 var DAYS = {
@@ -119,21 +119,21 @@ var T = {
   lo: {
     title: 'ໂປຣແກຣມຮຽນເພີ່ມຫຼັງເລີກຮຽນ',
     parentTitle: 'ຂໍ້ມູນຂອງທ່ານ',
-    pname: 'ຊື່ຂອງທ່ານ', pcontact: 'ເບີໂທ ຫຼື WhatsApp',
+    pname: 'ຊື່ຂອງທ່ານ', pcontact: 'ເບີໂທ ຫຼື ເບີ WhatsApp',
     next: 'ຕໍ່ໄປ', back: 'ກັບຄືນ',
-    gradeQ: 'ລູກຂອງທ່ານຮຽນຊັ້ນໃດ?', cname: 'ຊື່ນັກຮຽນ',
+    gradeQ: 'ລູກຂອງທ່ານຮຽນຫ້ອງໃດ?', cname: 'ຊື່ຂອງລູກທ່ານ',
     actQ: 'ລູກຂອງທ່ານສົນໃຈກິດຈະກຳໃດ?', actHint: 'ກົດເລືອກໄດ້ຫຼາຍອັນ. ທຸກກິດຈະກຳ 4:00-5:00 ໂມງແລງ.',
     firstQ: 'ເລືອກອັນໃດເປັນອັນດັບ 1?',
     clash: 'ບາງກິດຈະກຳທີ່ທ່ານເລືອກຢູ່ວັນດຽວກັນ, ກະລຸນາເລືອກອັນດັບ 1.',
-    review: 'ລູກຂອງທ່ານ', addChild: '+ ເພີ່ມລູກຄົນອື່ນ', send: 'ສົ່ງ',
-    sending: 'ກຳລັງສົ່ງ...', thanks: 'ຂອບໃຈ!', thanks2: 'ພວກເຮົາໄດ້ຮັບຂໍ້ມູນຂອງທ່ານແລ້ວ ແລະ ຈະຕິດຕໍ່ກັບໄປ.',
-    errName: 'ກະລຸນາຕື່ມຊື່ ແລະ ເບີໂທ.',
+    review: 'ລູກຂອງທ່ານ', addChild: '+ ເພີ່ມລູກອີກຄົນ', send: 'ສົ່ງ',
+    sending: 'ກຳລັງສົ່ງ...', thanks: 'ຂອບໃຈ!', thanks2: 'ພວກເຮົາໄດ້ຮັບຂໍ້ມູນຂອງທ່ານແລ້ວ ແລະ ຈະຕິດຕໍ່ກັບໄປໄວໆນີ້.',
+    errName: 'ກະລຸນາຕື່ມຊື່ ແລະ ເບີໂທຂອງທ່ານ.',
     errChild: 'ກະລຸນາເລືອກຊັ້ນ ແລະ ຕື່ມຊື່ນັກຮຽນ.',
     errAct: 'ກະລຸນາເລືອກຢ່າງໜ້ອຍໜຶ່ງກິດຈະກຳ.',
-    errFirst: 'ກະລຸນາເລືອກອັນດັບ 1.',
+    errFirst: 'ກະລຸນາເລືອກທາງເລືອກອັນດັບ 1.',
     errSend: 'ມີບັນຫາ, ກະລຸນາລອງໃໝ່.',
     free: 'ອາດມີຄ່າທຳນຽມບາງຢ່າງ', perMonth: 'ບາດ/ເດືອນ', start: 'ເລີ່ມ 2 ພະຈິກ',
-    interested: 'ສົນໃຈ', first: 'ອັນດັບ 1', ordinal: ''
+    interested: 'ສົນໃຈ', first: 'ທາງເລືອກອັນດັບໜຶ່ງ', ordinal: ''
   }
 };
 
