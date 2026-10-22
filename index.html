@@ -166,7 +166,7 @@ function addChild() {
   go(2);
 }
 
-function removeChild(i) {
+function dropChild(i) {
   S.children.splice(i, 1);
   if (!S.children.length) { addChild(); return; }
   render();
@@ -262,7 +262,7 @@ function render() {
       h += '<div class="sum"><b>' + esc(c.name) + '</b> · ' + esc(gradeLabel(c.grade)) + '<br>' +
            t('interested') + ': ' + c.acts.map(function (id) { return esc(actById(id)[S.lang]); }).join(', ') + '<br>' +
            (c.first ? t('first') + ': ★ ' + esc(actById(c.first)[S.lang]) : '') +
-           '<br><button class="back" onclick="removeChild(' + i + ')">✕</button></div>';
+           '<br><button class="back" onclick="dropChild(' + i + ')">✕</button></div>';
     });
     h += err + '<button class="btn alt" onclick="addChild()">' + t('addChild') + '</button>' +
          '<button class="btn orange" id="sendbtn" onclick="sendAll()">' + t('send') + '</button>';
