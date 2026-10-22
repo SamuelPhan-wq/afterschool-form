@@ -9,6 +9,9 @@ extremely straightforward: big buttons, few steps, works on any phone, no sign-i
 ## Files
 - `index.html`  The parent-facing page. One self-contained file (HTML + CSS + JS), no frameworks, no build step.
   It sends answers to the Apps Script link in `APPS_SCRIPT_URL` (top of the script block).
+- `img/`  School logo (`logo.png`) and the round activity badges made for the parent group chat
+  (`soccer.jpg`, `chinese.jpg`, `lao.jpg`, `swimming.jpg`, 200px copies; originals were in Sam's Downloads/files 2).
+  Each activity in `ACTS` names its badge in `img`. Colours come from the logo: blue #1f6ea8, navy #182f63, orange #f5650f.
 - `Code.gs`  Google Apps Script receiver (`doPost`). Saves one row per child into a Google Sheet
   ("After-School Interest Responses") and creates the sheet the first time. `setup()` creates it and logs the URL.
 

@@ -4,35 +4,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DIS After-School Programs</title>
 <meta charset="utf-8">
+<link rel="icon" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Noto+Sans+Lao:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+  /* School colours, taken from the logo and the group-chat badges */
+  :root { --blue: #1f6ea8; --navy: #182f63; --orange: #f5650f; --ink: #1b2b4b; --muted: #55657f; --line: #d5deea; --soft: #eaf2fa; }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: 'Noto Sans Lao', 'Phetsarath OT', -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: #f2f6fb; color: #1b2b4b; }
-  #app { max-width: 520px; margin: 0 auto; padding: 20px 16px 40px; }
-  h1 { font-size: 22px; line-height: 1.35; text-align: center; margin: 12px 0 8px; color: #1f3f8f; }
-  h2 { font-size: 20px; margin: 18px 0 10px; }
-  p.sub { text-align: center; margin: 0 0 20px; color: #4a5a78; }
-  .btn { display: block; width: 100%; padding: 16px; margin: 12px 0; font-size: 18px; font-weight: 600; border: 0; border-radius: 14px; background: #1f3f8f; color: #fff; font-family: inherit; }
-  .btn.alt { background: #fff; color: #1f3f8f; border: 2px solid #1f3f8f; }
-  .btn.orange { background: #f07a1f; }
+  body { margin: 0; font-family: 'Nunito', 'Noto Sans Lao', 'Phetsarath OT', -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--ink);
+         background: #f3f6fa; overflow-x: hidden; }
+  #app { max-width: 520px; margin: 0 auto; padding: 16px 16px 40px; }
+  /* Full-width blue band behind the logo; the white panel overlaps its bottom edge */
+  .top { text-align: center; background: linear-gradient(180deg, var(--navy), var(--blue));
+         margin: -16px calc(50% - 50vw) -36px; padding: 16px calc(50vw - 50% + 0px) 50px; }
+  .panel { position: relative; }
+  .top img { width: 72px; height: 72px; border-radius: 50%; background: #fff; padding: 3px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+  .top.big img { width: 132px; height: 132px; }
+  .top .school { color: #fff; font-weight: 800; letter-spacing: .5px; font-size: 14px; margin-top: 6px; text-transform: uppercase; }
+  .panel { background: #fff; border-radius: 20px; padding: 18px 16px 20px; box-shadow: 0 6px 24px rgba(24,47,99,.10); }
+  h1 { font-size: 23px; line-height: 1.35; text-align: center; margin: 4px 0 8px; color: var(--navy); font-weight: 800; }
+  h2 { font-size: 20px; margin: 14px 0 10px; color: var(--navy); font-weight: 800; }
+  p.sub { text-align: center; margin: 0 0 18px; color: var(--muted); }
+  .btn { display: block; width: 100%; padding: 16px; margin: 12px 0; font-size: 18px; font-weight: 700; border: 0; border-radius: 14px; background: var(--blue); color: #fff; font-family: inherit; box-shadow: 0 3px 0 rgba(0,0,0,.12); }
+  .btn.alt { background: #fff; color: var(--blue); border: 2px solid var(--blue); box-shadow: none; }
+  .btn.orange { background: var(--orange); }
   .btn:disabled { opacity: .5; }
-  .btn.big { padding: 26px; font-size: 24px; }
-  label { display: block; font-weight: 600; margin: 16px 0 6px; }
-  input[type=text], input[type=tel] { width: 100%; padding: 14px; font-size: 18px; border: 2px solid #c6d2e6; border-radius: 12px; font-family: inherit; }
+  .btn.big { padding: 24px; font-size: 24px; }
+  label { display: block; font-weight: 700; margin: 16px 0 6px; }
+  input[type=text], input[type=tel] { width: 100%; padding: 14px; font-size: 18px; border: 2px solid var(--line); border-radius: 12px; font-family: inherit; background: #fbfdff; }
+  input:focus { outline: none; border-color: var(--blue); }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .tile { padding: 16px 8px; font-size: 18px; font-weight: 600; background: #fff; border: 2px solid #c6d2e6; border-radius: 12px; color: #1b2b4b; font-family: inherit; text-align: center; }
-  .tile.on { background: #1f3f8f; border-color: #1f3f8f; color: #fff; }
-  .card { display: block; width: 100%; text-align: left; padding: 14px; margin: 10px 0; background: #fff; border: 2px solid #c6d2e6; border-radius: 14px; font-family: inherit; color: #1b2b4b; font-size: 17px; }
-  .card.on { border-color: #1f3f8f; background: #e6eeff; }
+  .tile { padding: 16px 8px; font-size: 18px; font-weight: 700; background: #fff; border: 2px solid var(--line); border-radius: 12px; color: var(--ink); font-family: inherit; text-align: center; }
+  .tile.on { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .card { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; padding: 12px; margin: 10px 0; background: #fff; border: 2px solid var(--line); border-radius: 16px; font-family: inherit; color: var(--ink); font-size: 17px; }
+  .card.on { border-color: var(--blue); background: var(--soft); }
+  .card img { width: 68px; height: 68px; border-radius: 50%; flex: none; }
+  .card.small img { width: 44px; height: 44px; }
+  .card .txt { flex: 1; min-width: 0; }
   .card b { display: block; font-size: 19px; }
-  .card span { display: block; color: #4a5a78; font-size: 15px; margin-top: 2px; }
-  .card .tick { float: right; font-size: 24px; color: #1f3f8f; }
-  .note { background: #fff4e5; border-radius: 10px; padding: 10px 12px; margin: 12px 0; font-size: 15px; }
-  .err { color: #c0302b; font-weight: 600; margin: 10px 0; }
-  .sum { background: #fff; border-radius: 14px; padding: 14px; margin: 10px 0; border: 2px solid #c6d2e6; }
+  .card span { display: block; color: var(--muted); font-size: 15px; margin-top: 2px; }
+  .card .tick { flex: none; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; margin: 0; }
+  .card.on .tick { background: var(--blue); border-color: var(--blue); }
+  .note { background: #fff1e6; border-left: 4px solid var(--orange); border-radius: 10px; padding: 10px 12px; margin: 14px 0; font-size: 15px; }
+  .err { color: #c0302b; font-weight: 700; margin: 10px 0; }
+  .sum { display: flex; gap: 12px; align-items: flex-start; background: #fff; border-radius: 14px; padding: 12px; margin: 10px 0; border: 2px solid var(--line); }
+  .sum .imgs { display: flex; flex-wrap: wrap; gap: 4px; width: 92px; flex: none; }
+  .sum .imgs img { width: 44px; height: 44px; border-radius: 50%; }
+  .sum .txt { flex: 1; }
   .sum b { font-size: 18px; }
-  .back { background: none; border: 0; color: #1f3f8f; font-size: 16px; padding: 6px 0; font-family: inherit; }
-  .done { text-align: center; padding-top: 40px; }
-  .done .big { font-size: 60px; }
+  .back { background: none; border: 0; color: #fff; font-size: 16px; padding: 6px 0; font-family: inherit; font-weight: 700; }
+  .x { background: none; border: 0; color: #c0302b; font-size: 22px; padding: 0 4px; font-family: inherit; }
+  .done { text-align: center; padding: 20px 0 10px; }
+  .done .big { width: 72px; height: 72px; line-height: 72px; margin: 0 auto 6px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 40px; }
+  .badges { display: flex; justify-content: center; gap: 8px; margin: 18px 0 4px; }
+  .badges img { width: 54px; height: 54px; border-radius: 50%; }
 </style>
 </head>
 <body>
@@ -53,12 +78,23 @@ var DAYS = {
 
 // grades: [first, last] as positions in GRADES (0 = Pre-K, 1 = Kinder, 2 = Grade 1 ... 6 = Grade 5).
 var ACTS = [
-  { id: 'sb', en: 'Soccer (boys)', lo: 'ເຕະບານ (ເດັກຊາຍ)', days: 'tuthu', price: 'free', grades: [4, 6] },
-  { id: 'sg', en: 'Soccer (girls)', lo: 'ເຕະບານ (ເດັກຍິງ)', days: 'monwed', price: 'free', grades: [4, 6] },
-  { id: 'ch', en: 'Chinese', lo: 'ພາສາຈີນ', days: 'tuthu', price: '3,500', grades: [1, 6], age: { en: 'Ages 5-12', lo: 'ອາຍຸ 5-12 ປີ' } },
-  { id: 'lo', en: 'Lao Language', lo: 'ພາສາລາວ', days: 'tuthu', price: '3,200', grades: [1, 6] },
-  { id: 'sw', en: 'Swimming', lo: 'ລອຍນ້ຳ', days: 'swim', price: '4,200', grades: [0, 4] }
+  { id: 'sb', en: 'Soccer (boys)', lo: 'ເຕະບານ (ເດັກຊາຍ)', days: 'tuthu', price: 'free', grades: [4, 6], img: 'soccer' },
+  { id: 'sg', en: 'Soccer (girls)', lo: 'ເຕະບານ (ເດັກຍິງ)', days: 'monwed', price: 'free', grades: [4, 6], img: 'soccer' },
+  { id: 'ch', en: 'Chinese', lo: 'ພາສາຈີນ', days: 'tuthu', price: '3,500', grades: [1, 6], img: 'chinese', age: { en: 'Ages 5-12', lo: 'ອາຍຸ 5-12 ປີ' } },
+  { id: 'lo', en: 'Lao Language', lo: 'ພາສາລາວ', days: 'tuthu', price: '3,200', grades: [1, 6], img: 'lao' },
+  { id: 'sw', en: 'Swimming', lo: 'ລອຍນ້ຳ', days: 'swim', price: '4,200', grades: [0, 4], img: 'swimming' }
 ];
+function actImg(a) { return '<img src="img/' + a.img + '.jpg" alt="">'; }
+
+// Logo header on every screen, with an optional back button, then the white panel.
+function frame(backTo, content, big) {
+  return '<div class="top' + (big ? ' big' : '') + '">' +
+         '<div style="position:relative">' +
+         (backTo >= 0 ? '<button class="back" style="position:absolute;left:0;top:0" onclick="go(' + backTo + ')">← ' + t('back') + '</button>' : '') +
+         '<img src="img/logo.png" alt="Diamond International School">' +
+         '<div class="school">Diamond International School</div></div></div>' +
+         '<div class="panel">' + content + '</div>';
+}
 
 var T = {
   en: {
@@ -205,71 +241,75 @@ function render() {
   var err = S.err ? '<div class="err">' + esc(S.err) + '</div>' : '';
 
   if (S.step === 0) {
-    h = '<h1>DIS After-School Programs<br>ໂປຣແກຣມຮຽນເພີ່ມຫຼັງເລີກຮຽນ</h1>' +
+    h = '<h1>After-School Programs<br>ໂປຣແກຣມຮຽນເພີ່ມຫຼັງເລີກຮຽນ</h1>' +
+        '<div class="badges">' + ['soccer', 'chinese', 'lao', 'swimming'].map(function (n) { return '<img src="img/' + n + '.jpg" alt="">'; }).join('') + '</div>' +
         '<p class="sub">Choose your language · ເລືອກພາສາ</p>' +
         '<button class="btn big" onclick="setLang(\'en\')">English</button>' +
         '<button class="btn big orange" onclick="setLang(\'lo\')">ພາສາລາວ</button>';
+    h = frame(-1, h, true);
   }
 
   else if (S.step === 1) {
-    h = '<button class="back" onclick="go(0)">← ' + t('back') + '</button>' +
-        '<h1>' + t('title') + '</h1><h2>' + t('parentTitle') + '</h2>' +
+    h = '<h1>' + t('title') + '</h1><h2>' + t('parentTitle') + '</h2>' +
         '<label>' + t('pname') + '</label><input type="text" id="pn" value="' + esc(S.parent) + '">' +
         '<label>' + t('pcontact') + '</label><input type="tel" id="pc" value="' + esc(S.contact) + '">' +
         err + '<button class="btn" onclick="nextParent()">' + t('next') + '</button>';
+    h = frame(0, h);
   }
 
   else if (S.step === 2) {
-    var back = S.children.length ? 4 : 1;
-    h = '<button class="back" onclick="go(' + back + ')">← ' + t('back') + '</button>' +
-        '<h2>' + t('gradeQ') + '</h2><div class="grid">';
+    h = '<h2>' + t('gradeQ') + '</h2><div class="grid">';
     for (var i = 0; i < GRADES.length; i++) {
       h += '<button class="tile' + (S.cur.grade === i ? ' on' : '') + '" onclick="pickGrade(' + i + ')">' + esc(gradeLabel(i)) + '</button>';
     }
     h += '</div><label>' + t('cname') + '</label><input type="text" id="cn" value="' + esc(S.cur.name) + '">' +
          err + '<button class="btn" onclick="nextChild()">' + t('next') + '</button>';
+    h = frame(S.children.length ? 4 : 1, h);
   }
 
   else if (S.step === 3) {
-    h = '<button class="back" onclick="go(2)">← ' + t('back') + '</button>' +
-        '<h2>' + t('actQ') + '</h2><p class="sub" style="text-align:left">' + esc(S.cur.name) + ' · ' + esc(gradeLabel(S.cur.grade)) + '</p>' +
-        '<p>' + t('actHint') + '</p>';
+    h = '<h2>' + t('actQ') + '</h2><p class="sub" style="text-align:left;margin-bottom:6px">' + esc(S.cur.name) + ' · ' + esc(gradeLabel(S.cur.grade)) + '</p>' +
+        '<p style="margin-top:0">' + t('actHint') + '</p>';
     available(S.cur.grade).forEach(function (a) {
       var on = S.cur.acts.indexOf(a.id) >= 0;
       var price = a.price === 'free' ? t('free') : a.price + ' ' + t('perMonth');
       var extra = a.age ? ' · ' + a.age[S.lang] : '';
       var start = a.id === 'lo' ? ' · ' + t('start') : '';
-      h += '<button class="card' + (on ? ' on' : '') + '" onclick="toggleAct(\'' + a.id + '\')">' +
-           (on ? '<span class="tick">✓</span>' : '') +
-           '<b>' + esc(a[S.lang]) + '</b>' +
+      h += '<button class="card' + (on ? ' on' : '') + '" onclick="toggleAct(\'' + a.id + '\')">' + actImg(a) +
+           '<div class="txt"><b>' + esc(a[S.lang]) + '</b>' +
            '<span>' + daysFor(a, S.cur.grade) + extra + '</span>' +
-           '<span>' + price + start + '</span></button>';
+           '<span>' + price + start + '</span></div>' +
+           '<span class="tick">' + (on ? '✓' : '') + '</span></button>';
     });
     if (clashing().length) {
       h += '<div class="note">' + t('clash') + '</div><h2>' + t('firstQ') + '</h2>';
       clashing().forEach(function (id) {
-        var a = actById(id);
-        h += '<button class="card' + (S.cur.first === id ? ' on' : '') + '" onclick="pickFirst(\'' + id + '\')">' +
-             (S.cur.first === id ? '<span class="tick">★</span>' : '') + '<b>' + esc(a[S.lang]) + '</b></button>';
+        var a = actById(id), on = S.cur.first === id;
+        h += '<button class="card small' + (on ? ' on' : '') + '" onclick="pickFirst(\'' + id + '\')">' + actImg(a) +
+             '<div class="txt"><b>' + esc(a[S.lang]) + '</b></div><span class="tick">' + (on ? '★' : '') + '</span></button>';
       });
     }
     h += err + '<button class="btn" onclick="saveChild()">' + t('next') + '</button>';
+    h = frame(2, h);
   }
 
   else if (S.step === 4) {
     h = '<h2>' + t('review') + '</h2>';
     S.children.forEach(function (c, i) {
-      h += '<div class="sum"><b>' + esc(c.name) + '</b> · ' + esc(gradeLabel(c.grade)) + '<br>' +
-           t('interested') + ': ' + c.acts.map(function (id) { return esc(actById(id)[S.lang]); }).join(', ') + '<br>' +
-           (c.first ? t('first') + ': ★ ' + esc(actById(c.first)[S.lang]) : '') +
-           '<br><button class="back" onclick="dropChild(' + i + ')">✕</button></div>';
+      h += '<div class="sum"><div class="imgs">' + c.acts.map(function (id) { return actImg(actById(id)); }).join('') + '</div>' +
+           '<div class="txt"><b>' + esc(c.name) + '</b> · ' + esc(gradeLabel(c.grade)) + '<br>' +
+           t('interested') + ': ' + c.acts.map(function (id) { return esc(actById(id)[S.lang]); }).join(', ') +
+           (c.first ? '<br>' + t('first') + ': ★ ' + esc(actById(c.first)[S.lang]) : '') + '</div>' +
+           '<button class="x" onclick="dropChild(' + i + ')" aria-label="Remove">✕</button></div>';
     });
     h += err + '<button class="btn alt" onclick="addChild()">' + t('addChild') + '</button>' +
          '<button class="btn orange" id="sendbtn" onclick="sendAll()">' + t('send') + '</button>';
+    h = frame(-1, h);
   }
 
   else {
-    h = '<div class="done"><div class="big">✓</div><h1>' + t('thanks') + '</h1><p>' + t('thanks2') + '</p></div>';
+    h = frame(-1, '<div class="done"><div class="big">✓</div><h1>' + t('thanks') + '</h1><p>' + t('thanks2') + '</p>' +
+        '<div class="badges">' + ['soccer', 'chinese', 'lao', 'swimming'].map(function (n) { return '<img src="img/' + n + '.jpg" alt="">'; }).join('') + '</div></div>', true);
   }
 
   document.getElementById('app').innerHTML = h;
