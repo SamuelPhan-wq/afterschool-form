@@ -69,7 +69,7 @@ var T = {
     gradeQ: 'What grade is your child in?', cname: 'Child’s name',
     actQ: 'Which activities is your child interested in?', actHint: 'Tap all that apply. All programs run 4:00-5:00 PM.',
     firstQ: 'Which one is your first choice?',
-    clash: 'Some programs are on the same days, so please pick a first choice.',
+    clash: 'Some of your choices are on the same days, so please pick a first choice.',
     review: 'Your children', addChild: '+ Add another child', send: 'Send',
     sending: 'Sending...', thanks: 'Thank you!', thanks2: 'We have received your reply and will be in touch soon.',
     errName: 'Please fill in your name and phone number.',
@@ -88,7 +88,7 @@ var T = {
     gradeQ: 'ລູກຂອງທ່ານຮຽນຊັ້ນໃດ?', cname: 'ຊື່ນັກຮຽນ',
     actQ: 'ລູກຂອງທ່ານສົນໃຈກິດຈະກຳໃດ?', actHint: 'ກົດເລືອກໄດ້ຫຼາຍອັນ. ທຸກກິດຈະກຳ 4:00-5:00 ໂມງແລງ.',
     firstQ: 'ເລືອກອັນໃດເປັນອັນດັບ 1?',
-    clash: 'ບາງກິດຈະກຳຢູ່ວັນດຽວກັນ, ກະລຸນາເລືອກອັນດັບ 1.',
+    clash: 'ບາງກິດຈະກຳທີ່ທ່ານເລືອກຢູ່ວັນດຽວກັນ, ກະລຸນາເລືອກອັນດັບ 1.',
     review: 'ລູກຂອງທ່ານ', addChild: '+ ເພີ່ມລູກຄົນອື່ນ', send: 'ສົ່ງ',
     sending: 'ກຳລັງສົ່ງ...', thanks: 'ຂອບໃຈ!', thanks2: 'ພວກເຮົາໄດ້ຮັບຂໍ້ມູນຂອງທ່ານແລ້ວ ແລະ ຈະຕິດຕໍ່ກັບໄປ.',
     errName: 'ກະລຸນາຕື່ມຊື່ ແລະ ເບີໂທ.',
@@ -112,7 +112,15 @@ function swimDays(g) { return g <= 1 ? 'monwed' : (g <= 4 ? 'tuthu' : null); }
 function available(g) {
   return ACTS.filter(function (a) { return g >= a.grades[0] && g <= a.grades[1]; });
 }
-function daysFor(a, g) { return DAYS[a.id === 'sw' ? swimDays(g) : a.days][S.lang]; }
+function dayKey(a, g) { return a.id === 'sw' ? swimDays(g) : a.days; }
+function daysFor(a, g) { return DAYS[dayKey(a, g)][S.lang]; }
+// Chosen activities that share their days with another chosen activity. Only these need a first choice.
+function clashing() {
+  var g = S.cur.grade;
+  return S.cur.acts.filter(function (id) {
+    return S.cur.acts.some(function (o) { return o !== id && dayKey(actById(o), g) === dayKey(actById(id), g); });
+  });
+}
 
 function go(step) { S.step = step; S.err = ''; render(); window.scrollTo(0, 0); }
 
@@ -140,9 +148,7 @@ function nextChild() {
 function toggleAct(id) {
   var i = S.cur.acts.indexOf(id);
   if (i >= 0) S.cur.acts.splice(i, 1); else S.cur.acts.push(id);
-  if (S.cur.acts.length === 1) S.cur.first = S.cur.acts[0];
-  if (S.cur.acts.indexOf(S.cur.first) < 0) S.cur.first = S.cur.acts.length ? '' : '';
-  if (S.cur.acts.length === 1) S.cur.first = S.cur.acts[0];
+  if (clashing().indexOf(S.cur.first) < 0) S.cur.first = '';
   render();
 }
 
@@ -150,7 +156,7 @@ function pickFirst(id) { S.cur.first = id; render(); }
 
 function saveChild() {
   if (!S.cur.acts.length) { S.err = t('errAct'); render(); return; }
-  if (!S.cur.first) { S.err = t('errFirst'); render(); return; }
+  if (clashing().length && !S.cur.first) { S.err = t('errFirst'); render(); return; }
   S.children.push({ grade: S.cur.grade, name: S.cur.name, acts: S.cur.acts.slice(), first: S.cur.first });
   go(4);
 }
@@ -179,7 +185,7 @@ function sendAll() {
         'Child name': c.name,
         'Grade': GRADES[c.grade].en,
         'Interested in': c.acts.map(function (id) { return actById(id).en; }).join(', '),
-        'First choice': actById(c.first).en,
+        'First choice': c.first ? actById(c.first).en : '',
         'Children in family': S.children.length
       };
     })
@@ -239,9 +245,9 @@ function render() {
            '<span>' + daysFor(a, S.cur.grade) + extra + '</span>' +
            '<span>' + price + start + '</span></button>';
     });
-    if (S.cur.acts.length > 1) {
+    if (clashing().length) {
       h += '<div class="note">' + t('clash') + '</div><h2>' + t('firstQ') + '</h2>';
-      S.cur.acts.forEach(function (id) {
+      clashing().forEach(function (id) {
         var a = actById(id);
         h += '<button class="card' + (S.cur.first === id ? ' on' : '') + '" onclick="pickFirst(\'' + id + '\')">' +
              (S.cur.first === id ? '<span class="tick">★</span>' : '') + '<b>' + esc(a[S.lang]) + '</b></button>';
@@ -255,7 +261,7 @@ function render() {
     S.children.forEach(function (c, i) {
       h += '<div class="sum"><b>' + esc(c.name) + '</b> · ' + esc(gradeLabel(c.grade)) + '<br>' +
            t('interested') + ': ' + c.acts.map(function (id) { return esc(actById(id)[S.lang]); }).join(', ') + '<br>' +
-           t('first') + ': ★ ' + esc(actById(c.first)[S.lang]) +
+           (c.first ? t('first') + ': ★ ' + esc(actById(c.first)[S.lang]) : '') +
            '<br><button class="back" onclick="removeChild(' + i + ')">✕</button></div>';
     });
     h += err + '<button class="btn alt" onclick="addChild()">' + t('addChild') + '</button>' +

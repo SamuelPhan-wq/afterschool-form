@@ -16,7 +16,8 @@ extremely straightforward: big buttons, few steps, works on any phone, no sign-i
 1. Screen 1: choose language (English or ພາສາລາວ)
 2. Screen 2: parent name and phone/WhatsApp
 3. Screen 3: child's grade (Pre-K to Grade 5; Grade 6 was removed on purpose) and name
-4. Screen 4: tap activities; if more than one, pick a first choice
+4. Screen 4: tap activities; only if two chosen activities are on the same days, pick a first choice among those
+   (otherwise the sheet's First choice column is left blank)
 5. Screen 5: summary of all children, "Add another child" (siblings keep the same parent details), then Send
 6. Thank-you screen
 
@@ -29,7 +30,7 @@ Each activity only shows for its grades (`grades` in `ACTS`):
 - Lao Language: Kinder-Grade 5, Tue & Thu, 3,200 THB/month, starts November 2, 2026. One class (Mathematics was removed on purpose).
 - Swimming: Pre-K-Grade 3, 4,200 THB/month, twice a week. Pre-K and Kinder Mon & Wed; Grades 1-3 Tue & Thu.
 - Pre-K children only see Swimming.
-- Some programs share days, so parents choose a first choice.
+- Some programs share days, so parents choose a first choice, but only among the same-day ones they picked.
 
 ## Decisions already made (don't undo without asking)
 - Google Forms was rejected as too complicated. Google Apps Script serving the page directly also failed to load
