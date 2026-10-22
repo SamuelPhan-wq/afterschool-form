@@ -43,7 +43,7 @@ window.onerror = function (m, u, l) { document.getElementById('app').innerHTML =
 var GRADES = [
   { en: 'Pre-K', lo: 'Pre-K' }, { en: 'Kinder', lo: 'Kinder' },
   { en: 'Grade 1', lo: 'ຊັ້ນ 1' }, { en: 'Grade 2', lo: 'ຊັ້ນ 2' }, { en: 'Grade 3', lo: 'ຊັ້ນ 3' },
-  { en: 'Grade 4', lo: 'ຊັ້ນ 4' }, { en: 'Grade 5', lo: 'ຊັ້ນ 5' }, { en: 'Grade 6', lo: 'ຊັ້ນ 6' }
+  { en: 'Grade 4', lo: 'ຊັ້ນ 4' }, { en: 'Grade 5', lo: 'ຊັ້ນ 5' }
 ];
 
 var DAYS = {
@@ -51,12 +51,13 @@ var DAYS = {
   monwed: { en: 'Monday & Wednesday', lo: 'ວັນຈັນ ແລະ ວັນພຸດ' }
 };
 
+// grades: [first, last] as positions in GRADES (0 = Pre-K, 1 = Kinder, 2 = Grade 1 ... 6 = Grade 5).
 var ACTS = [
-  { id: 'sb', en: 'Soccer (boys)', lo: 'ເຕະບານ (ເດັກຊາຍ)', days: 'tuthu', price: 'free' },
-  { id: 'sg', en: 'Soccer (girls)', lo: 'ເຕະບານ (ເດັກຍິງ)', days: 'monwed', price: 'free' },
-  { id: 'ch', en: 'Chinese', lo: 'ພາສາຈີນ', days: 'tuthu', price: '3,500', age: { en: 'Ages 5-12', lo: 'ອາຍຸ 5-12 ປີ' } },
-  { id: 'lo', en: 'Lao Language', lo: 'ພາສາລາວ', days: 'tuthu', price: '3,200' },
-  { id: 'sw', en: 'Swimming', lo: 'ລອຍນ້ຳ', days: 'swim', price: '4,200' }
+  { id: 'sb', en: 'Soccer (boys)', lo: 'ເຕະບານ (ເດັກຊາຍ)', days: 'tuthu', price: 'free', grades: [4, 6] },
+  { id: 'sg', en: 'Soccer (girls)', lo: 'ເຕະບານ (ເດັກຍິງ)', days: 'monwed', price: 'free', grades: [4, 6] },
+  { id: 'ch', en: 'Chinese', lo: 'ພາສາຈີນ', days: 'tuthu', price: '3,500', grades: [1, 6], age: { en: 'Ages 5-12', lo: 'ອາຍຸ 5-12 ປີ' } },
+  { id: 'lo', en: 'Lao Language', lo: 'ພາສາລາວ', days: 'tuthu', price: '3,200', grades: [1, 6] },
+  { id: 'sw', en: 'Swimming', lo: 'ລອຍນ້ຳ', days: 'swim', price: '4,200', grades: [0, 4] }
 ];
 
 var T = {
@@ -109,7 +110,7 @@ function gradeLabel(i) { return GRADES[i][S.lang]; }
 
 function swimDays(g) { return g <= 1 ? 'monwed' : (g <= 4 ? 'tuthu' : null); }
 function available(g) {
-  return ACTS.filter(function (a) { return a.id !== 'sw' || swimDays(g) !== null; });
+  return ACTS.filter(function (a) { return g >= a.grades[0] && g <= a.grades[1]; });
 }
 function daysFor(a, g) { return DAYS[a.id === 'sw' ? swimDays(g) : a.days][S.lang]; }
 

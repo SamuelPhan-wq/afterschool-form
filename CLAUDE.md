@@ -15,7 +15,7 @@ extremely straightforward: big buttons, few steps, works on any phone, no sign-i
 ## How it works
 1. Screen 1: choose language (English or ພາສາລາວ)
 2. Screen 2: parent name and phone/WhatsApp
-3. Screen 3: child's grade (Pre-K to Grade 6) and name
+3. Screen 3: child's grade (Pre-K to Grade 5; Grade 6 was removed on purpose) and name
 4. Screen 4: tap activities; if more than one, pick a first choice
 5. Screen 5: summary of all children, "Add another child" (siblings keep the same parent details), then Send
 6. Thank-you screen
@@ -23,11 +23,12 @@ extremely straightforward: big buttons, few steps, works on any phone, no sign-i
 Sheet columns: Timestamp, Language, Parent name, Phone / WhatsApp, Child name, Grade, Interested in, First choice, Children in family.
 
 ## Program details (all programs run 4:00-5:00 PM)
-- Soccer boys: Tue & Thu. Soccer girls: Mon & Wed. Cards say "Some fees may apply" (uniform/equipment).
-- Chinese: Tue & Thu, 3,500 THB/month, ages 5-12 (seats are limited: 10 seats ages 5-7, 3 seats ages 7-12)
-- Lao Language: Tue & Thu, 3,200 THB/month, starts November 2, 2026. One class (Mathematics was removed on purpose).
-- Swimming: 4,200 THB/month, twice a week. Pre-K and Kinder (ages 4-6) Mon & Wed; Grades 1-3 (ages 6-9) Tue & Thu.
-  Swimming is hidden for Grades 4+.
+Each activity only shows for its grades (`grades` in `ACTS`):
+- Soccer boys: Grades 3-5, Tue & Thu. Soccer girls: Grades 3-5, Mon & Wed. Cards say "Some fees may apply" (uniform/equipment).
+- Chinese: Kinder-Grade 5, Tue & Thu, 3,500 THB/month (seats are limited: 10 seats ages 5-7, 3 seats ages 7-12)
+- Lao Language: Kinder-Grade 5, Tue & Thu, 3,200 THB/month, starts November 2, 2026. One class (Mathematics was removed on purpose).
+- Swimming: Pre-K-Grade 3, 4,200 THB/month, twice a week. Pre-K and Kinder Mon & Wed; Grades 1-3 Tue & Thu.
+- Pre-K children only see Swimming.
 - Some programs share days, so parents choose a first choice.
 
 ## Decisions already made (don't undo without asking)
