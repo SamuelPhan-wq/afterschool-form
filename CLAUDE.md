@@ -56,7 +56,7 @@ Each activity only shows for its grades (`grades` in `ACTS`):
   Deploy > Manage deployments so the same link updates.
 - Test end to end with a two-child family and confirm two rows appear in the sheet.
 - Lao wording was reviewed by a native Lao speaker (Oct 2026) and their 13 corrections applied; grades are
-  written ຫ້ອງ ປ.1 to ປ.5. Any new Lao text added later still needs their check.
+  written ອະນຸບານ 2 (Pre-K), ອະນຸບານ 3 (Kinder), then ຫ້ອງ ປ.1 to ປ.5. Any new Lao text added later still needs their check.
 - Possible extras: QR code for the link, a reply deadline message on the thank-you screen, a Chinese seat-limit note,
   a dashboard/summary tab in the sheet counting interest per program.
 
