@@ -30,10 +30,10 @@ Sheet columns: Timestamp, Language, Parent name, Phone / WhatsApp, Child name, G
 Each activity only shows for its grades (`grades` in `ACTS`):
 - Soccer boys: Grades 3-5, Tue & Thu. Soccer girls: Grades 3-5, Mon & Wed. Cards say "Some fees may apply" (uniform/equipment).
 - Chinese: Kinder-Grade 5, Tue & Thu, 3,500 THB/month (seats are limited: 10 seats ages 5-7, 3 seats ages 7-12)
-- Lao Language: Kinder-Grade 5, Tue & Thu, 3,200 THB/month, starts November 2, 2026. One class (Mathematics was removed on purpose).
-- Swimming: Pre-K-Grade 3, 4,200 THB/month, twice a week. Pre-K and Kinder Mon & Wed; Grades 1-3 Tue & Thu.
+- Lao Language: Kinder-Grade 5, Monday-Thursday but only 2 days a week (school picks the days), 3,200 THB/month, starts November 2, 2026. One class (Mathematics was removed on purpose).
+- Swimming: Pre-K-Grade 3, Mon & Wed for every grade, 4,200 THB/month, twice a week.
 - Pre-K children only see Swimming.
-- Some programs share days, so parents choose a first choice, but only among the same-day ones they picked.
+- Some programs share days, so parents choose a first choice, but only among the same-day ones they picked. Lao has no fixed days, so it never counts as a clash.
 
 ## Decisions already made (don't undo without asking)
 - Google Forms was rejected as too complicated. Google Apps Script serving the page directly also failed to load

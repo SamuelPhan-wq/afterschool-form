@@ -73,7 +73,8 @@ var GRADES = [
 
 var DAYS = {
   tuthu: { en: 'Tuesday & Thursday', lo: 'ວັນອັງຄານ ແລະ ວັນພະຫັດ' },
-  monwed: { en: 'Monday & Wednesday', lo: 'ວັນຈັນ ແລະ ວັນພຸດ' }
+  monwed: { en: 'Monday & Wednesday', lo: 'ວັນຈັນ ແລະ ວັນພຸດ' },
+  monthu: { en: 'Monday-Thursday (2 days a week)', lo: 'ວັນຈັນ - ວັນພະຫັດ (ອາທິດລະ 2 ມື້)' }
 };
 
 // grades: [first, last] as positions in GRADES (0 = Pre-K, 1 = Kinder, 2 = Grade 1 ... 6 = Grade 5).
@@ -81,8 +82,8 @@ var ACTS = [
   { id: 'sb', en: 'Soccer (boys)', lo: 'ເຕະບານ (ເດັກຊາຍ)', days: 'tuthu', price: 'free', grades: [4, 6], img: 'soccer' },
   { id: 'sg', en: 'Soccer (girls)', lo: 'ເຕະບານ (ເດັກຍິງ)', days: 'monwed', price: 'free', grades: [4, 6], img: 'soccer' },
   { id: 'ch', en: 'Chinese', lo: 'ພາສາຈີນ', days: 'tuthu', price: '3,500', grades: [1, 6], img: 'chinese', age: { en: 'Ages 5-12', lo: 'ອາຍຸ 5-12 ປີ' } },
-  { id: 'lo', en: 'Lao Language', lo: 'ພາສາລາວ', days: 'tuthu', price: '3,200', grades: [1, 6], img: 'lao' },
-  { id: 'sw', en: 'Swimming', lo: 'ລອຍນ້ຳ', days: 'swim', price: '4,200', grades: [0, 4], img: 'swimming' }
+  { id: 'lo', en: 'Lao Language', lo: 'ພາສາລາວ', days: 'monthu', price: '3,200', grades: [1, 6], img: 'lao' },
+  { id: 'sw', en: 'Swimming', lo: 'ລອຍນ້ຳ', days: 'monwed', price: '4,200', grades: [0, 4], img: 'swimming' }
 ];
 function actImg(a) { return '<img src="img/' + a.img + '.jpg" alt="">'; }
 
@@ -144,17 +145,17 @@ function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&
 function actById(id) { return ACTS.filter(function (a) { return a.id === id; })[0]; }
 function gradeLabel(i) { return GRADES[i][S.lang]; }
 
-function swimDays(g) { return g <= 1 ? 'monwed' : (g <= 4 ? 'tuthu' : null); }
 function available(g) {
   return ACTS.filter(function (a) { return g >= a.grades[0] && g <= a.grades[1]; });
 }
-function dayKey(a, g) { return a.id === 'sw' ? swimDays(g) : a.days; }
-function daysFor(a, g) { return DAYS[dayKey(a, g)][S.lang]; }
+function dayKey(a) { return a.days; }
+function daysFor(a) { return DAYS[dayKey(a)][S.lang]; }
 // Chosen activities that share their days with another chosen activity. Only these need a first choice.
+// Lao runs 2 days a week anywhere Mon-Thu (the school picks), so it never counts as a clash.
 function clashing() {
-  var g = S.cur.grade;
   return S.cur.acts.filter(function (id) {
-    return S.cur.acts.some(function (o) { return o !== id && dayKey(actById(o), g) === dayKey(actById(id), g); });
+    var k = dayKey(actById(id));
+    return k !== 'monthu' && S.cur.acts.some(function (o) { return o !== id && dayKey(actById(o)) === k; });
   });
 }
 
