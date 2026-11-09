@@ -44,6 +44,10 @@ Each activity only shows for its grades (`grades` in `ACTS`):
 - Claude can't sign in to Google, so it can't edit or redeploy Apps Script. `Code.gs` (v2) is therefore generic and
   should never need changing: the page sends `{ rows: [{ 'Column name': value }] }`, and any new column name is added
   to the sheet's header automatically. Make all changes (new questions, new columns) in `index.html` only.
+- Open/close: the sheet has a `Settings` tab; cell B1 = OPEN or CLOSED. While CLOSED the page shows a bilingual
+  "survey closed" screen and `Code.gs` refuses new rows (so even an old open tab can't submit). The page checks with
+  `?status=1` after loading and fails open if Google can't be reached. Needs `Code.gs` v3 deployed ("receiver is running (v3)").
+  The closed-screen Lao was written by Claude and still needs the Lao speaker's check.
 - Hosting: GitHub Pages from this folder's public repo `afterschool-form` (GitHub user SamuelPhan-wq), branch
   `main`, root. Parent link: https://samuelphan-wq.github.io/afterschool-form/ . Everything lives in this one folder
   (the older `DIS/AfterSchoolProgram` folder was the previous home). The repo is public, so never put phone numbers,

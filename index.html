@@ -233,7 +233,7 @@ function sendAll() {
     body: JSON.stringify(payload)
   })
     .then(function (r) { return r.json(); })
-    .then(function (j) { if (j && j.ok) { go(5); } else { throw new Error('save failed'); } })
+    .then(function (j) { if (j && j.ok) { go(5); } else if (j && j.closed) { go(6); } else { throw new Error('save failed'); } })
     .catch(function () { S.err = t('errSend'); render(); });
 }
 
@@ -308,6 +308,13 @@ function render() {
     h = frame(-1, h);
   }
 
+  else if (S.step === 6) {
+    h = frame(-1, '<div class="done"><h1>This survey is now closed.</h1>' +
+        '<p>Thank you for your interest. If you have any questions, please contact the school.</p>' +
+        '<h1 style="margin-top:22px">ແບບສອບຖາມນີ້ປິດແລ້ວ</h1>' +
+        '<p>ຂອບໃຈທີ່ສົນໃຈ. ຖ້າມີຄຳຖາມ, ກະລຸນາຕິດຕໍ່ໂຮງຮຽນ.</p></div>', true);
+  }
+
   else {
     h = frame(-1, '<div class="done"><div class="big">✓</div><h1>' + t('thanks') + '</h1><p>' + t('thanks2') + '</p>' +
         '<div class="badges">' + ['soccer', 'chinese', 'lao', 'swimming'].map(function (n) { return '<img src="img/' + n + '.jpg" alt="">'; }).join('') + '</div></div>', true);
@@ -316,7 +323,17 @@ function render() {
   document.getElementById('app').innerHTML = h;
 }
 
+// If the school has closed the survey (Settings tab in the sheet), swap the form for a closed message.
+// If this check fails for any reason the form simply stays open; the server also refuses answers while closed.
+function checkOpen() {
+  fetch(APPS_SCRIPT_URL + '?status=1')
+    .then(function (r) { return r.json(); })
+    .then(function (j) { if (j && j.open === false && S.step < 5) go(6); })
+    .catch(function () {});
+}
+
 render();
+checkOpen();
 </script>
 </body>
 </html>

@@ -2,27 +2,40 @@
 // The parent page (index.html) sends ready-made rows here and they are saved to a Google Sheet in your Drive.
 // Written so it should never need editing again: the page decides the columns.
 // If the page sends a column name the sheet doesn't have yet, it is added to the end of the header row.
+//
+// OPEN / CLOSE the survey: in the sheet, go to the "Settings" tab and set B1 to OPEN or CLOSED.
+// While CLOSED, the page shows a "survey closed" message and no new replies are saved.
 
-function doGet() {
-  return ContentService.createTextOutput('After-school form receiver is running (v2).');
+function doGet(e) {
+  if (e && e.parameter && e.parameter.status) return json_({ open: isOpen_() });
+  return ContentService.createTextOutput('After-school form receiver is running (v3).');
 }
 
 function doPost(e) {
   var result = { ok: false };
   try {
+    if (!isOpen_()) {
+      result.closed = true;
+      return json_(result);
+    }
     var data = JSON.parse(e.postData.contents);
     saveRows_(data.rows || []);
     result.ok = true;
   } catch (err) {
     result.error = String(err);
   }
-  return ContentService.createTextOutput(JSON.stringify(result))
+  return json_(result);
+}
+
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
 // Run this once from the editor to create the sheet and approve permissions.
 function setup() {
   var ss = getSheet_().getParent();
+  isOpen_(); // creates the Settings tab if it is missing
   Logger.log('Responses sheet: ' + ss.getUrl());
 }
 
@@ -39,7 +52,23 @@ function getSheet_() {
     ss.getSheets()[0].appendRow(['Timestamp']);
     ss.getSheets()[0].setFrozenRows(1);
   }
-  return ss.getSheets()[0];
+  return ss.getSheetByName('Responses') || ss.getSheets()[0];
+}
+
+// The survey is open unless cell B1 of the "Settings" tab says CLOSED.
+function isOpen_() {
+  var ss = getSheet_().getParent();
+  var s = ss.getSheetByName('Settings');
+  if (!s) {
+    s = ss.insertSheet('Settings', ss.getNumSheets());
+    s.getRange('A1:C1').setValues([['Survey status', 'OPEN', 'Choose OPEN or CLOSED. CLOSED stops new replies straight away.']]);
+    s.getRange('B1').setDataValidation(
+      SpreadsheetApp.newDataValidation().requireValueInList(['OPEN', 'CLOSED'], true).build());
+    s.getRange('A1:B1').setFontWeight('bold');
+    s.setColumnWidth(1, 130);
+    s.setColumnWidth(3, 420);
+  }
+  return String(s.getRange('B1').getValue()).trim().toUpperCase() !== 'CLOSED';
 }
 
 // Stops typed text from being read as a spreadsheet formula.
